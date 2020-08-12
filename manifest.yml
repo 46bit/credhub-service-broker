@@ -1,0 +1,38 @@
+---
+applications:
+  - name: credhub-broker
+    memory: 128M
+    stack: cflinuxfs3
+    instances: 2
+    buildpacks:
+      - ruby_buildpack
+      - go_buildpack
+    command: |
+      ./config_generator.rb \
+        && ./bin/credhub-service-broker
+
+    health-check-type: http
+    health-check-http-endpoint: /healthcheck
+    routes:
+      - route: ((route))
+
+    env:
+      GOVERSION: go1.14
+      GOPACKAGENAME: github.com/46bit/credhub-service-broker
+      GO_INSTALL_PACKAGE_SPEC: github.com/46bit/credhub-service-broker
+
+      BASIC_AUTH_USERNAME: ((basic_auth_username))
+      BASIC_AUTH_PASSWORD: ((basic_auth_password))
+
+      # In a typical Cloud Foundry the url will be `https://credhub.service.cf.internal:8844` and
+      # the prefix may as well be `/credhub-service-broker`
+      CREDHUB_URL: ((credhub_url))
+      CREDHUB_PREFIX: ((credhub_prefix))
+      CREDHUB_UAA_CLIENT_ID: ((credhub_uaa_client_id))
+      CREDHUB_UAA_CLIENT_SECRET: ((credhub_uaa_client_secret))
+      CREDHUB_CA: ((credhub_ca))
+
+      LOCKET_ADDRESS: ((locket_address))
+      LOCKET_CLIENT_CERT: ((locket_client_cert))
+      LOCKET_CLIENT_KEY: ((locket_client_key))
+      LOCKET_CA_CERT: ((locket_ca_cert))

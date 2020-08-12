@@ -1,0 +1,5 @@
+/bin
+/tmp
+config.json
+config_*.crt
+config_*.key
