@@ -44,7 +44,7 @@ func (p *CredHubProvider) Provision(ctx context.Context, provisionData provideri
 	serviceInstance.UpdateSecretsList(secrets)
 
 	err = serviceInstance.Save(p.prefix, p.credhubClient)
-	return "", "", false, err
+	return "", "", true, err
 }
 
 func (p *CredHubProvider) Deprovision(ctx context.Context, deprovisionData provideriface.DeprovisionData) (operationData string, isAsync bool, err error) {
@@ -84,7 +84,7 @@ func (p *CredHubProvider) Update(ctx context.Context, updateData provideriface.U
 	serviceInstance.UpdateSecretsList(secrets)
 
 	err = serviceInstance.Save(p.prefix, p.credhubClient)
-	return "", false, err
+	return "", true, err
 }
 
 func (p *CredHubProvider) Bind(ctx context.Context, bindData provideriface.BindData) (binding brokerapi.Binding, err error) {
@@ -134,11 +134,13 @@ func (p *CredHubProvider) Unbind(ctx context.Context, unbindData provideriface.U
 
 	delete(serviceInstance.AppBindings, appBinding.BindingGUID)
 	err = serviceInstance.Save(p.prefix, p.credhubClient)
-	return brokerapi.UnbindSpec{
-		IsAsync: false,
-	}, nil
+	return brokerapi.UnbindSpec{}, nil
 }
 
 func (p *CredHubProvider) LastOperation(ctx context.Context, lastOperationData provideriface.LastOperationData) (state brokerapi.LastOperationState, description string, err error) {
-	return brokerapi.Succeeded, "Last operation polling not required. All operations are synchronous.", nil
+	serviceInstance, err := LoadServiceInstance(lastOperationData.InstanceID, p.prefix, p.credhubClient)
+	if err != nil {
+		return brokerapi.Failed, "", err
+	}
+	return brokerapi.Succeeded, serviceInstance.DescriptionForUsers(), nil
 }
