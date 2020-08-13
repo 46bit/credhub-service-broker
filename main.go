@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/46bit/credhub-service-broker/operators"
+
 	"code.cloudfoundry.org/credhub-cli/credhub"
 	"code.cloudfoundry.org/credhub-cli/credhub/auth"
 	"code.cloudfoundry.org/lager"
@@ -68,8 +70,9 @@ func main() {
 		})
 	}
 
-	credhubProvider := NewCredHubProvider(credhubConfig.Prefix, credhubClient, logger)
-	serviceBroker, err := broker.New(config, credhubProvider, logger)
+	operator := operators.NewSimpleOperator(credhubConfig.Prefix, credhubClient, logger)
+	brokerProvider := NewBrokerProvider(operator, logger)
+	serviceBroker, err := broker.New(config, brokerProvider, logger)
 	if err != nil {
 		logger.Fatal("err-with-new-broker", err)
 	}
