@@ -1,0 +1,27 @@
+route: credhub-broker.EDIT-THIS-VALUE.your-platform.com
+
+basic_auth_username: credhub-broker
+basic_auth_password: EDIT THIS VALUE
+
+credhub_url: https://credhub.service.cf.internal:8844
+credhub_prefix: /credhub-service-broker
+credhub_uaa_client_id: EDIT THIS VALUE
+credhub_uaa_client_secret: EDIT THIS VALUE
+credhub_ca: |
+  -----BEGIN CERTIFICATE-----
+  EDIT THIS VALUE
+  -----END CERTIFICATE-----
+
+locket_address: locket.service.cf.internal:8891
+locket_client_cert: |
+  -----BEGIN CERTIFICATE-----
+  EDIT THIS VALUE
+  -----END CERTIFICATE-----
+locket_client_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  EDIT THIS VALUE
+  -----END RSA PRIVATE KEY-----
+locket_ca_cert: |
+  -----BEGIN CERTIFICATE-----
+  EDIT THIS VALUE
+  -----END CERTIFICATE-----
