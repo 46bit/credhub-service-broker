@@ -70,8 +70,9 @@ func main() {
 		})
 	}
 
-	operator := operators.NewSimpleOperator(credhubConfig.Prefix, credhubClient, logger)
-	brokerProvider := NewBrokerProvider(operator, logger)
+	planOperators := map[string]operators.Operator{}
+	planOperators["simple"] = operators.NewSimpleOperator(credhubConfig.Prefix, credhubClient, logger)
+	brokerProvider := NewBrokerProvider(planOperators, credhubConfig.Prefix, credhubClient, logger)
 	serviceBroker, err := broker.New(config, brokerProvider, logger)
 	if err != nil {
 		logger.Fatal("err-with-new-broker", err)

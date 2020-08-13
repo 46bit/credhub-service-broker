@@ -8,10 +8,10 @@ import (
 )
 
 type Operator interface {
-	Provision(context.Context, provideriface.ProvisionData) (isAsync bool, err error)
-	Deprovision(context.Context, provideriface.DeprovisionData) (isAsync bool, err error)
-	Update(context.Context, provideriface.UpdateData) (isAsync bool, err error)
-	Bind(context.Context, provideriface.BindData) (brokerapi.Binding, error)
-	Unbind(context.Context, provideriface.UnbindData) (brokerapi.UnbindSpec, error)
-	LastOperation(context.Context, provideriface.LastOperationData) (state brokerapi.LastOperationState, description string, err error)
+	Provision(ctx context.Context, servicePlanName string, input provideriface.ProvisionData) (serviceInstance *ServiceInstance, isAsync bool, err error)
+	Deprovision(ctx context.Context, serviceInstance *ServiceInstance, input provideriface.DeprovisionData) (isAsync bool, err error)
+	Update(ctx context.Context, serviceInstance *ServiceInstance, input provideriface.UpdateData) (isAsync bool, err error)
+	Bind(ctx context.Context, serviceInstance *ServiceInstance, input provideriface.BindData) (brokerapi.Binding, error)
+	Unbind(ctx context.Context, serviceInstance *ServiceInstance, input provideriface.UnbindData) (brokerapi.UnbindSpec, error)
+	LastOperation(ctx context.Context, serviceInstance *ServiceInstance, input provideriface.LastOperationData) (state brokerapi.LastOperationState, description string, err error)
 }

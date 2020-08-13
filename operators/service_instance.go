@@ -18,19 +18,27 @@ func (b BoundApp) ActorName() string {
 	return fmt.Sprintf("mtls-app:%s", b.AppGUID)
 }
 
+type ServicePlan struct {
+	Name string `json:"name"`
+}
+
 type ServiceInstance struct {
 	ServiceInstanceGUID string              `json:"service_instance_guid"`
 	ResidentSpaceGUID   string              `json:"resident_space_guid"`
 	OrganizationGUID    string              `json:"organization_guid"`
+	ServicePlan         ServicePlan         `json:"service_plan"`
 	AppBindings         map[string]BoundApp `json:"app_bindings"`
 	SecretNames         []string            `json:"secret_names"`
 }
 
-func NewServiceInstance(serviceInstanceGUID, residentSpaceGUID, organizationGUID string) *ServiceInstance {
+func NewServiceInstance(serviceInstanceGUID, residentSpaceGUID, organizationGUID, servicePlanName string) *ServiceInstance {
 	return &ServiceInstance{
 		ServiceInstanceGUID: serviceInstanceGUID,
 		ResidentSpaceGUID:   residentSpaceGUID,
 		OrganizationGUID:    organizationGUID,
+		ServicePlan: ServicePlan{
+			Name: servicePlanName,
+		},
 	}
 }
 
